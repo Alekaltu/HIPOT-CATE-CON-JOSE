@@ -141,8 +141,7 @@ async def handle_question(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
         try:
             ahorro = float(question)
             context.user_data['ahorro'] = ahorro
-            # Aquí termina la recolección de datos y podríamos proceder a mostrar un resumen o realizar cálculos
-            await mostrar_resumen(update, context)
+            await finalizar_recopilacion_datos(update, context)
         except ValueError:
             await update.message.reply_text("Por favor, introduce un número válido para tu ahorro:")
     elif context.user_data.get('state') == 'CONFIRMAR_MADRID':
@@ -161,19 +160,21 @@ async def handle_question(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
     if question == 'Volver al menú principal':
         return await start(update, context)
 
-async def mostrar_resumen(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def finalizar_recopilacion_datos(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-    spreadsheet_id = '1qWF-iOdviTQDfitgXnLgpe6d0esFHT--2X3h01jdma0'  # Reemplaza con tu ID real de spreadsheet
-
-    context.user_data['user_id'] = user_id
-    new_sheet_id = create_user_sheet(spreadsheet_id, user_id)
-    if new_sheet_id:
-        result = update_user_data(spreadsheet_id, new_sheet_id, context.user_data)
+    spreadsheet_id = '1qWF-iOdviTQDfitgXnLgpe6d0esFHT--2X3h01jdma0'  # Asegúrate de que este ID sea correcto
+    
+    sheet_title = create_user_sheet(spreadsheet_id, user_id)
+    if sheet_title:
+        result = update_user_data(spreadsheet_id, sheet_title, context.user_data)
         print(f"Resultado de la actualización: {result}")
+        mensaje_final = ("Gracias por usar el Bot de Hipotécate con Jose. "
+                         "Tus datos han sido guardados y Jose se pondrá en contacto contigo lo antes posible. "
+                         "¡Que tengas un buen día!")
+    else:
+        mensaje_final = ("Lo siento, ha habido un problema al guardar tus datos. "
+                         "Por favor, intenta de nuevo más tarde o contacta con soporte.")
 
-    mensaje_final = ("Gracias por usar el Bot de Hipotécate con Jose. "
-                     "Tus datos han sido guardados y Jose se pondrá en contacto contigo lo antes posible. "
-                     "¡Que tengas un buen día!")
     await update.message.reply_text(mensaje_final)
     
     # Reiniciar el estado para una nueva simulación

@@ -7,8 +7,7 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 
 # Definir la ruta al archivo de credenciales
-SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'hipotecate-con-jose-2bde0457b966.json')
-
+SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'hipotecate-con-jose-eb84a5e3dafa.json')
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 def get_credentials():
@@ -19,13 +18,16 @@ def get_credentials():
             creds = service_account.Credentials.from_service_account_file(
                 SERVICE_ACCOUNT_FILE, scopes=SCOPES)
             print(f"Credenciales cargadas: {creds.service_account_email}")
+            print(f"Proyecto ID: {creds.project_id}")
+            print(f"Token URI: {creds.token_uri}")
         else:
             print(f"Archivo de credenciales no encontrado: {SERVICE_ACCOUNT_FILE}")
     except Exception as e:
         print(f"Error al cargar credenciales: {e}")
+        print(f"Tipo de error: {type(e)}")
     return creds
 
-def update_user_data(spreadsheet_id, sheet_id, user_data):
+def update_user_data(spreadsheet_id, sheet_title, user_data):
     creds = get_credentials()
     service = build('sheets', 'v4', credentials=creds)
     
@@ -48,7 +50,7 @@ def update_user_data(spreadsheet_id, sheet_id, user_data):
     data = []
     for cell, value in values:
         data.append({
-            'range': f'Usuario_{user_data["user_id"]}!{cell}',
+            'range': f"'{sheet_title}'!{cell}",
             'values': [[value]]
         })
     
@@ -60,7 +62,7 @@ def update_user_data(spreadsheet_id, sheet_id, user_data):
     try:
         result = service.spreadsheets().values().batchUpdate(
             spreadsheetId=spreadsheet_id, body=body).execute()
-        print(f"Datos actualizados en la hoja: Usuario_{user_data['user_id']}")
+        print(f"Datos actualizados en la hoja: {sheet_title}")
         return result
     except HttpError as error:
         print(f"An error occurred: {error}")
