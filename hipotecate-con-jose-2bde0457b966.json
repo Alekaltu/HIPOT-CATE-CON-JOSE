@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "hipotecate-con-jose",
+  "private_key_id": "2bde0457b966061c3715de5ee92516f65f9ce5f2",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC+wXb8eZMUGdR4\nvgM7mzZqCKZDUSi7UPJfNLPeALbeqTDBMHSYY5l+8/BDrvXxjd08lneVVXCAFugP\nh7Z/jopSkPJpmgL59hNeZbvTRBxe4oAp98w96B/NsN9a4uznT8to6B5Eg6phVJsq\nAtCSw6JBqzlHRZVZ078pcW0hFfdismahneZYkDxauaxpAasDT/BSVJOF5MOYvXAo\npj3WILdtT92jlmqyh5QcjmSt6lVvBaoUWU+kUgCDL3MK1o0sR0T1bw/IzSQDd5za\nzQslkX8mGKX4tQPNmY45xe6SsfZ6ubD92fmuo4+RIvMdukDYI0JHuu7N8mszfyef\naQXiJm9FAgMBAAECggEAD41IKovX4vo7IW/uZWBBYVzcqfLWil+uWaGQmNoqjpXb\n03hO8oig6vcvi2PFiet0vNE7T88ULwvkYLXCD31lx2xT/dTlsWQvo+Z77Ry/CmOs\nKspuL02QNY3ExqJnHvGuu1oR86iKDh7ez/VESh7jM42RNn9qDoAuCY6Fj5O8pEy+\nTZomkPufpZp/U/FGaVoKaVyrmsNvPuJowWzdNKAovjWwC//EVbweD1p87ExPITnQ\nhwTrj1JjLTipw5Gq4QXgl9B9aB3v6Qpr9vWP+UGUFDWhBQbHdx6348AvL7loXXsm\n4y3Ynus8vHOpneQiHGKS4sIseFGVE+Fr4MdhDyXIYQKBgQD9tOKXxZLZ0JVSs0Dx\nuYWSXPwDKVXNn7IHAr8lTzI3wkKctfaOO/NMfRH7iSB7XiTrYU9TQwpAUbP/55A5\nVWMPabMTGIZ7q7pUuIBefcIRfEv7uKqrF328uStkgCOK1oFurNui8MBUxmap/Ppb\nRgDzjSdDgGQI6o8i4qF7bgXhJQKBgQDAeuboOhRG3w1FnA8RTBm+yj+x6ldj1jBZ\nNpABNtUiqBCG/sMWuHofFyo2MviuggSLFvZ9XVWCehXO6zp81dhVU5fNdz1hmN1I\nc3xcy1GgUyjt60LU57idgcQYKkS6FmDUyOQf1l+oo1ciobjJIUR53731+5hzU9mD\n5js4nCZLoQKBgQDvbP1KbdIgbI/+89ueQ46iic3qzd+DpenEY/svooWpyVJDwhVk\nNX9t97o4vzhANKBy4eqSkPnjqTdNkaKx+Lr7mKy+oK6Jl47I1TWP9u5mwf6TF7s4\nq3ql17nzplnkdHrBj6/XHYzkdDf+xBcge/f54IPlWA0PvQxHx8jNSw+RYQKBgD0v\nlHFj7QguZYioOD32ZAS7RA4pgUgyUUI6zwIjzRLsO/y9xYRWdjOl6Hw8LcNDf3A7\nh3WIkuMcLgyNyBTg4ZkWLp5Y9kEtF8KtO25AD52Ycd1XuPH3Cz++fXh1D03cSUG6\n7pGUUupHqi5PHG+LTLo1PqyQIwEeOXntWQwAz0ehAoGAC6AfXfX2j0NVpNNddPqP\nCrHqSaHZxDXsEl3OzXIhP/cLtVotoJpWho4pNEfhUJw/lSltzbHiDT6MHOJBnb/h\nP3cGziBQ4fyi0SKwM8YN4zWwfhWPbwumQkvLraRnYAEQA1XcaNAXmjJICuByM/t8\nIAdE2eapLkM4cgtYLt91zWY=\n-----END PRIVATE KEY-----\n",
+  "client_email": "bot-hipotecas-sheets@hipotecate-con-jose.iam.gserviceaccount.com",
+  "client_id": "112118051547910754955",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/bot-hipotecas-sheets%40hipotecate-con-jose.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
