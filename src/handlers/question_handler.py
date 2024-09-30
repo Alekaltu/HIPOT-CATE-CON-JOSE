@@ -39,7 +39,12 @@ async def handle_question(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
             await update.message.reply_text("Por favor, introduce un número válido para tu edad:")
     elif context.user_data.get('state') == 'TRABAJANDO':
         context.user_data['trabajando'] = question.lower() == 'sí'
-        await send_calendar(update, context)
+        if context.user_data['trabajando']:
+            await send_calendar(update, context)
+        else:
+            response = "¿Tienes algún ingreso extra mensual? Si no tienes, escribe 0."
+            context.user_data['state'] = 'INGRESOS_EXTRA'
+            await update.message.reply_text(response)
     elif context.user_data.get('state') == 'YEAR_TRABAJO':
         try:
             year = int(question)
@@ -196,16 +201,9 @@ def create_calendar_keyboard(date, view):
         keyboard.append([InlineKeyboardButton("Anterior", callback_data="prev_years"),
                          InlineKeyboardButton("Siguiente", callback_data="next_years")])
     elif view == 'month':
-        for i in range(0, 12, 3):
+        for i in range(1, 13, 3):
             row = [InlineKeyboardButton(calendar.month_abbr[j], callback_data=f'month_{j}') 
-                   for j in range(i+1, min(i+4, 13))]
-            keyboard.append(row)
-    elif view == 'day':
-        month_calendar = calendar.monthcalendar(date.year, date.month)
-        for week in month_calendar:
-            row = [InlineKeyboardButton(str(day) if day != 0 else " ", 
-                                        callback_data=f'day_{day}' if day != 0 else ' ') 
-                   for day in week]
+                   for j in range(i, min(i+3, 13))]
             keyboard.append(row)
     return InlineKeyboardMarkup(keyboard)
 
@@ -215,9 +213,9 @@ async def calendar_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     data = query.data.split('_')
     view = data[0]
-    value = int(data[1])
+    value = int(data[1]) if len(data) > 1 and data[1].isdigit() else 0
     
-    date = context.user_data['calendar_date']
+    date = context.user_data.get('calendar_date', datetime.now())
     
     if view == 'year':
         date = date.replace(year=value)
@@ -225,15 +223,11 @@ async def calendar_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                       reply_markup=create_calendar_keyboard(date, 'month'))
     elif view == 'month':
         date = date.replace(month=value)
-        await query.edit_message_text("Selecciona el día:",
-                                      reply_markup=create_calendar_keyboard(date, 'day'))
-    elif view == 'day':
-        date = date.replace(day=value)
         context.user_data['fecha_inicio_trabajo'] = date
         months_worked = (datetime.now().year - date.year) * 12 + datetime.now().month - date.month
         context.user_data['antiguedad_laboral'] = months_worked
         
-        await query.edit_message_text(f"Has seleccionado la fecha: {date.strftime('%d/%m/%Y')}")
+        await query.edit_message_text(f"Has seleccionado la fecha: {date.strftime('%m/%Y')}")
         
         # Pasar al siguiente estado (tipo de contrato)
         response = "¿Qué tipo de contrato tienes?"
@@ -246,13 +240,11 @@ async def calendar_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
         context.user_data['state'] = 'TIPO_CONTRATO'
         await context.bot.send_message(chat_id=update.effective_chat.id, text=response, reply_markup=reply_markup)
-    if data[0] in ['prev_years', 'next_years']:
+    elif view in ['prev_years', 'next_years']:
         current_year = date.year
-        if data[0] == 'prev_years':
-            new_year = current_year - 60
-        else:
-            new_year = current_year + 60
+        new_year = current_year - 60 if view == 'prev_years' else current_year + 60
         date = date.replace(year=new_year)
         await query.edit_message_text("Selecciona el año de inicio de tu trabajo actual:",
                                       reply_markup=create_calendar_keyboard(date, 'year'))
-        return
+    
+    context.user_data['calendar_date'] = date
