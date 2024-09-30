@@ -1,4 +1,5 @@
 import os
+import json
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
@@ -9,12 +10,19 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 def get_credentials():
     creds = None
     try:
-        if os.path.exists(SERVICE_ACCOUNT_FILE):
+        # Primero, intentar obtener las credenciales desde una variable de entorno
+        google_creds = os.getenv('GOOGLE_CREDENTIALS')
+        if google_creds:
+            creds_dict = json.loads(google_creds)
+            creds = service_account.Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
+            print("Credenciales cargadas desde variable de entorno")
+        elif os.path.exists(SERVICE_ACCOUNT_FILE):
             print(f"Archivo de credenciales encontrado: {SERVICE_ACCOUNT_FILE}")
             creds = service_account.Credentials.from_service_account_file(
                 SERVICE_ACCOUNT_FILE, scopes=SCOPES)
             print(f"Credenciales cargadas: {creds.service_account_email}")
             print(f"Proyecto ID: {creds.project_id}")
+            print(f"Token URI: {creds.token_uri}")
         else:
             print(f"Archivo de credenciales no encontrado: {SERVICE_ACCOUNT_FILE}")
     except Exception as e:

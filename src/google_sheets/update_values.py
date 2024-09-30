@@ -5,6 +5,7 @@ from googleapiclient.errors import HttpError
 import os
 from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
+import json
 
 # Definir la ruta al archivo de credenciales
 SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), 'hipotecate-con-jose-eb84a5e3dafa.json')
@@ -13,7 +14,13 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 def get_credentials():
     creds = None
     try:
-        if os.path.exists(SERVICE_ACCOUNT_FILE):
+        # Primero, intentar obtener las credenciales desde una variable de entorno
+        google_creds = os.getenv('GOOGLE_CREDENTIALS')
+        if google_creds:
+            creds_dict = json.loads(google_creds)
+            creds = service_account.Credentials.from_service_account_info(creds_dict, scopes=SCOPES)
+            print("Credenciales cargadas desde variable de entorno")
+        elif os.path.exists(SERVICE_ACCOUNT_FILE):
             print(f"Archivo de credenciales encontrado: {SERVICE_ACCOUNT_FILE}")
             creds = service_account.Credentials.from_service_account_file(
                 SERVICE_ACCOUNT_FILE, scopes=SCOPES)

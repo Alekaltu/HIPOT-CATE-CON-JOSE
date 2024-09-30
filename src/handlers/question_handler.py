@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import calendar
 from src.google_sheets.create_sheet import create_user_sheet
 from src.google_sheets.update_values import update_user_data
+import os
 
 async def handle_question(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     question = update.message.text
@@ -162,7 +163,7 @@ async def handle_question(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
 async def finalizar_recopilacion_datos(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-    spreadsheet_id = '1qWF-iOdviTQDfitgXnLgpe6d0esFHT--2X3h01jdma0'  # Asegúrate de que este ID sea correcto
+    spreadsheet_id = os.getenv('SPREADSHEET_ID', '1qWF-iOdviTQDfitgXnLgpe6d0esFHT--2X3h01jdma0')
     
     sheet_title = create_user_sheet(spreadsheet_id, user_id)
     if sheet_title:
